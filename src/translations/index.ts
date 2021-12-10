@@ -16,16 +16,16 @@ export enum LocalStorage {
 
 const addTranslationDefaults = <
   T extends GeneralTranslation
->(preferred: GeneralTranslation, defaults: T) => {
-  const keys: (keyof T)[] = R.uniq([...Object.keys(defaults), ...Object.keys(preferred)]) as any[]
+>(prefered: GeneralTranslation, defaults: T) => {
+  const keys: (keyof T)[] = R.uniq([...Object.keys(defaults), ...Object.keys(prefered)]) as any[]
   return R.reduce(
     (acc: T, key: keyof T) => {
-      const preferredKey = key as keyof GeneralTranslation
+      const preferedKey = key as keyof GeneralTranslation
       return {
         ...acc,
         [key]: {
           ...(defaults[key] ? defaults[key] : {}),
-          ...(preferred[preferredKey] ? preferred[preferredKey] : {})
+          ...(prefered[preferedKey] ? prefered[preferedKey] : {})
         }
       }
     },
@@ -36,15 +36,15 @@ const addTranslationDefaults = <
 
 const translationsWithDefaults = (lang: ImplementedLanguage) => {
   const parentLang = lang.match(/(?<parentLang>.*)-/)?.groups?.parentLang
-  const preferredTranslations = languageCodeToTranslationsMap[lang]
+  const preferedTranslations = languageCodeToTranslationsMap[lang]
 
   if (parentLang && isImplemented(parentLang)) {
     const parentTranslation = languageCodeToTranslationsMap[parentLang]
-    const withParentLangDefaults = addTranslationDefaults(preferredTranslations, parentTranslation)
+    const withParentLangDefaults = addTranslationDefaults(preferedTranslations, parentTranslation)
     return addTranslationDefaults(withParentLangDefaults, defaultTranslation)
   }
 
-  return addTranslationDefaults(preferredTranslations, defaultTranslation)
+  return addTranslationDefaults(preferedTranslations, defaultTranslation)
 }
 
 const isImplemented = (lang: string): lang is ImplementedLanguage => {

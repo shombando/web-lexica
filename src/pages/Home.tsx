@@ -6,15 +6,13 @@ import { ReactComponent as GroupAdd } from '@material-design-icons/svg/round/gro
 import { ReactComponent as Language } from '@material-design-icons/svg/round/language.svg'
 
 import Svg from '../components/Svg'
-import { Rules, useRulesFromStorage } from '../game/rules'
+import { Rules } from '../game/rules'
 import './Home.css'
 import { CurrentGameType, GameType } from '../game'
 import { useLanguageCodeFromLocalStorage } from '../game/language'
 import { Translation } from '../translations/implemented-languages'
 import { useTranslations } from '../translations'
 import { makeClasses } from '../util/classes'
-import { useHighScore } from '../game/high-scores'
-import { useConstants } from '../style/constants'
 
 const GameSettings = (): JSX.Element => {
   const classes = makeClasses('home-game-option', 'home-button-defaults')
@@ -50,7 +48,6 @@ const Title = (): JSX.Element => {
 }
 
 const PlayGameButtons = (): JSX.Element => {
-  const { fontSizeTitle } = useConstants()
   const classes = makeClasses('home-button-defaults', 'home-play-game-button')
 
   return <div className="home-game-buttons">
@@ -58,33 +55,16 @@ const PlayGameButtons = (): JSX.Element => {
       to='/singleplayer'
       className={classes}
     >
-      <Svg.Customizable svg={PlayCircle} props={{
-        title: 'New Game',
-        height: fontSizeTitle,
-        width: fontSizeTitle
-      }}/>
+      <Svg.Standard svg={PlayCircle} title="New Game"/>
       New Game
     </Link>
     <Link
       to='/multiplayer'
       className={classes}
     >
-      <Svg.Customizable svg={GroupAdd} props={{
-        title: 'New Game',
-        height: fontSizeTitle,
-        width: fontSizeTitle,
-      }}/>
+      <Svg.Standard svg={GroupAdd} title="New Game"/>
       Multiplayer
     </Link>
-  </div>
-}
-
-const HighScore = (): JSX.Element => {
-  const [{ name }, currentId] = useRulesFromStorage()
-  const highScore = useHighScore(currentId)
-  return <div className="home-high-score">
-    <div>Mode: {name}</div>
-    <div>High Score: {highScore}</div>
   </div>
 }
 
@@ -95,11 +75,10 @@ const Home = ({ setGameType }: { setGameType: (type: GameType) => void }) => {
   if (gameType !== GameType.Create) setGameType(GameType.Create)
 
   return <div className="Page home">
-    <HighScore />
     <Title />
     <div className="home-buttons-container">
-      <PlayGameButtons />
       <GameSettings />
+      <PlayGameButtons />
     </div>
   </div>
 }
