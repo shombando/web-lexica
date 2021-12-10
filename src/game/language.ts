@@ -26,7 +26,7 @@ export enum LocalStorage {
   LanguageCode = 'game-language'
 }
 
-const getBaseUrl = () => `${window.location.protocol}//${window.location.host}`
+const getBaseUrl = () => `https://lexica.github.io`
 
 const getAvailableLanguages = () => axios.get<string[]>(
   `${getBaseUrl()}/lexica/api/v1/languages.json`
